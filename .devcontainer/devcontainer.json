@@ -19,5 +19,6 @@
     },
     "forwardPorts": [3000,5432],
     "remoteUser": "utakata",
-    "workspaceFolder": "/workspace" 
+    "workspaceFolder": "/workspace", 
+    "postCreateCommand": "export WATCHPACK_POLLING=true"
 }
