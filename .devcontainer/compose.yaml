@@ -1,19 +1,44 @@
 services:
   app:
-    build: 
+    build:
       context: .
-    volumes: 
+    volumes:
       - ../workspace:/workspace
     tty: true
     user: utakata
+    networks:
+      - app_network
+    depends_on:
+      - db
+    ports: 
+      - 3000:3000
   db:
     image: postgres:latest
     restart: unless-stopped
     volumes:
-      - postgres-data: /var/lib/postgresql/data
-    enviroment:
-      POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
-      POSTGRES_PASSWORD: postgres
+      - ./postgres:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+    networks:
+      - app_network
+    environment:
+      TZ: "Asia/Tokyo"
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: $DB_NAME
+    
+    # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+    ports: 
+      - 5432:5432
+    
+    tty: true
+   
+    hostname: db
+
 volumes:
-  postgres-data
+  postgres-data:
+
+networks:
+  app_network:
+    driver: bridge

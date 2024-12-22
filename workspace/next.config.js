@@ -16,6 +16,7 @@ const config = {
         }
         return config
     }
+    // export WATCHPACK_POLLING=true
 };
 
 export default config;

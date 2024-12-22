@@ -44,3 +44,9 @@ yarn-error.log*
 
 # idea files
 .idea
+
+# database 
+./db
+
+# prisma migrations
+prisma/migrations/

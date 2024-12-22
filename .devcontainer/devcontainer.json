@@ -15,10 +15,9 @@
         "setting": {
           "terminal.integrated.shell.linux": "/bin/bash"
         }
-      },
-      
+      }
     },
+    "forwardPorts": [3000,5432],
     "remoteUser": "utakata",
-    "workspaceFolder": "/workspace",
-    "postCreateCommand": "bun -g install zenn-cli @qiita/qiita-cli && mkdir -p zenn qiita image"
-  }
+    "workspaceFolder": "/workspace" 
+}

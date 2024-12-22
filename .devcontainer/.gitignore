@@ -1,0 +1,5 @@
+# Enviroment Variable
+.env
+
+# Database
+postgres/
