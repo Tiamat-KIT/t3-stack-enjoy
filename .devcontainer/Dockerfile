@@ -28,5 +28,5 @@ RUN curl -fsSL https://bun.sh/install | bash \
 
 ENV PATH $BUN_INSTALL/bin:$PATH
 
-RUN export WATCHPACK_POLLING=true
 RUN chown ${USER_NAME}:${USER_NAME} /workspace
+RUN bun install 

@@ -4,7 +4,6 @@ services:
       context: .
     volumes:
       - ../workspace:/workspace:cached
-      - node_modules:/workspace/node_modules
     tty: true
     user: utakata
     networks:
@@ -39,7 +38,6 @@ services:
 
 volumes:
   postgres-data:
-  node_modules:
 
 networks:
   app_network:
