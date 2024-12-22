@@ -4,7 +4,7 @@
 
 @layer base {
     h1 {
-        @apply text-xl font-bold ;
+        @apply text-[calc(0.8rem+2vw)] font-bold text-center;
     }
 
     ul {

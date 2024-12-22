@@ -2,6 +2,9 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 // import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google"
+import { env } from "~/env";
+import {customFetch} from "next-auth";
+import { ProxyAgent,fetch as undici } from "undici";
 
 import { db } from "~/server/db";
 
@@ -17,6 +20,7 @@ declare module "next-auth" {
       id: string;
       // ...other properties
       // role: UserRole;
+      accessToken: string
     } & DefaultSession["user"];
   }
 
@@ -26,14 +30,35 @@ declare module "next-auth" {
   // }
 }
 
+
+ const dispatcher = new ProxyAgent("http://wwwproxy.kanazawa-it.ac.jp:8080")
+ function proxy(...args: Parameters<typeof fetch>): ReturnType<typeof fetch> {
+    // @ts-expect-error `undici` has a `duplex` option
+    return undici(args[0],{...args[1],dispatcher})
+ }
+
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
  * @see https://next-auth.js.org/configuration/options
  */
 export const authConfig = {
+  session: {
+    strategy: "jwt"
+  },
+  trustHost: true,
   providers: [
-    GoogleProvider,
+    GoogleProvider({
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+          scope:  "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar.readonly",
+        }
+      },
+      [customFetch]: proxy
+    }),
     /**
      * ...add more providers here.
      *
@@ -44,14 +69,33 @@ export const authConfig = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
+  secret: env.AUTH_SECRET,
   adapter: PrismaAdapter(db),
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
-  },
+    jwt: async ({token, user, account, profile, isNewUser}) => {
+        if (user) {
+            token.user = user;
+            const u = user as any
+            token.role = u.role;
+        }
+        if (account) {
+            token.accessToken = account.access_token
+            token.refreshToken = account.refresh_token
+        }
+        return token;
+    },
+    session: ({session, token}) => {
+        token.accessToken
+        return {
+            ...session,
+            user: {
+                ...session.user,
+                role: token.role,
+                accessToken: token.accessToken,
+                refreshToken: token.refreshToken,
+            },
+
+        };
+    },
+}
 } satisfies NextAuthConfig;
