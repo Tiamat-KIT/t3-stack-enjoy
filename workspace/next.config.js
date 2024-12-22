@@ -9,10 +9,12 @@ const config = {
     watchOptions: {
         pollIntervalMs: 3000
     },
-    webpack(config,context) {
-        config.watchOptions = {
-            poll: 1000,
-            aggregateTimeout: 300
+    webpack(config,{dev}) {
+        if(dev) {
+            config.watchOptions = {
+                poll: 1000,
+                aggregateTimeout: 200
+            }
         }
         return config
     }

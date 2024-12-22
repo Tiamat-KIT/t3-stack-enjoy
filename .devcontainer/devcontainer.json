@@ -37,5 +37,5 @@
     "forwardPorts": [3000,5432],
     "remoteUser": "utakata",
     "workspaceFolder": "/workspace", 
-    "postCreateCommand": "export WATCHPACK_POLLING=true"
+    "postCreateCommand": "export WATCHPACK_POLLING=true && export CHOKIDAR_USEPOLLING=true"
 }
