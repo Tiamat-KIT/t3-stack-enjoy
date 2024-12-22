@@ -8,6 +8,13 @@ import "./src/env.js";
 const config = {
     watchOptions: {
         pollIntervalMs: 3000
+    },
+    webpack(config,context) {
+        config.watchOptions = {
+            poll: 1000,
+            aggregateTimeout: 300
+        }
+        return config
     }
 };
 

@@ -1,0 +1,24 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/marcosgomesneto/bun-devcontainers/tree/main/src/basic-bun
+{
+    "name": "utakata-t3-stack-enjoy",
+    "dockerComposeFile": "compose.yaml",
+    "service": "app",
+    // Configure tool-specific properties.
+    "customizations": {
+      // Configure properties specific to VS Code.
+      "vscode": {
+        // Add the IDs of extensions you want installed when the container is created.
+        "extensions": [
+          "oven.bun-vscode"
+        ],
+        "setting": {
+          "terminal.integrated.shell.linux": "/bin/bash"
+        }
+      },
+      
+    },
+    "remoteUser": "utakata",
+    "workspaceFolder": "/workspace",
+    "postCreateCommand": "bun -g install zenn-cli @qiita/qiita-cli && mkdir -p zenn qiita image"
+  }

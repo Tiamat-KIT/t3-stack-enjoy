@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    h1 {
+        @apply text-xl font-bold ;
+    }
+
+    ul {
+        @apply flex;
+    }
+    li {
+        @apply mx-3 border border-black px-3 py-2 rounded-xl bg-black text-white;
+    }
+    header {
+        @apply border border-slate-300 shadow-xl rounded-lg justify-between items-center;
+    }
+}
