@@ -8,13 +8,30 @@
     "customizations": {
       // Configure properties specific to VS Code.
       "vscode": {
-        // Add the IDs of extensions you want installed when the container is created.
-        "extensions": [
-          "oven.bun-vscode"
-        ],
-        "setting": {
+        "settings": {
+          "typescript.preferences.importModuleSpecifier": "relative",
+          "[typescript]": {
+              "editor.defaultFormatter": "esbenp.prettier-vscode",
+              "editor.formatOnSave": true,
+              "editor.codeActionsOnSave": {
+                  "source.organizeImports": "explicit"
+              }
+          },
+          "[prisma]": {
+              "editor.defaultFormatter": "Prisma.prisma",
+              "editor.formatOnSave": true
+          },
+          "jest.runMode": "on-demand",
           "terminal.integrated.shell.linux": "/bin/bash"
-        }
+        },
+        "extensions": [
+            "dbaeumer.vscode-eslint",
+            "esbenp.prettier-vscode",
+            "Orta.vscode-jest",
+            "peakchen90.open-html-in-browser",
+            "Prisma.prisma",
+            "oven.bun-vscode"
+          ]
       }
     },
     "forwardPorts": [3000,5432],
