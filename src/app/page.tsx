@@ -1,33 +1,19 @@
 import { google } from "googleapis";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { LatestPost } from "~/app/_components/post";
-import oauth2Client from "~/client/google";
+import CalenderView from "~/components/Calender";
 import { auth } from "~/server/auth";
 import { api, HydrateClient } from "~/trpc/server";
 
 export default async function Home() {
   /* const hello = await api.post.hello({ text: "from tRPC" });*/
   const session = await auth();
-  const accessToken = session?.user?.accessToken;
-
 
   if (session?.user) {
     void api.post.getLatest.prefetch();
-  } 
-
-  if(accessToken) {
-    oauth2Client.setCredentials({
-      access_token: accessToken
-    })
-    const calender = google.calendar({
-      version: "v3",
-      auth: oauth2Client
-    })
-
-    const calenderResponse = await calender.calendarList.list()
-    console.log(calenderResponse.data)
-  } 
+  }
 
   return (
     <HydrateClient>
@@ -42,6 +28,7 @@ export default async function Home() {
       >
         {session ? "Sign out" : "Sign in"}
       </Link>
+      
     </div>
     
     

@@ -30,13 +30,6 @@ declare module "next-auth" {
   // }
 }
 
-
- const dispatcher = new ProxyAgent("http://wwwproxy.kanazawa-it.ac.jp:8080")
- function proxy(...args: Parameters<typeof fetch>): ReturnType<typeof fetch> {
-    // @ts-expect-error `undici` has a `duplex` option
-    return undici(args[0],{...args[1],dispatcher})
- }
-
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
@@ -56,8 +49,7 @@ export const authConfig = {
           response_type: "code",
           scope:  "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar.readonly",
         }
-      },
-      [customFetch]: proxy
+      }
     }),
     /**
      * ...add more providers here.
