@@ -2,12 +2,16 @@ import {auth} from "~/server/auth"
 
 export default auth((req) => {
     const { nextUrl } = req;
-    const isLoggedIn = !!req.auth
-    if(isLoggedIn) {
-        return Response.redirect(new URL("/dashboard",nextUrl))
+    const session = req.auth
+    if(session != null) {
+        return Response.redirect(
+            new URL(
+                "/dashboard",
+                nextUrl
+            ))
     }
 })
 
 export const config = {
-    matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
-  };
+    matcher: ["/((?!api|trpc|_next/static|_next/image|favicon.ico).*)"],
+};
